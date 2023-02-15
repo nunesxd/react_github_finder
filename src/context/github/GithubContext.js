@@ -7,12 +7,15 @@ const GithubContext = createContext()
 export const GithubProvider = ({ children }) => {
     const initialState = {
         users: [],
-        loading: true
+        loading: false
     };
 
     const [state, dispatch] = useReducer(githubReducer, initialState);
 
+    // Obtem usuários do Github, para testes apenas:
     const fetchUsers = async () => {
+        setLoading();
+
         const response = await fetch(`${process.env.REACT_APP_GITHUB_URL}/users`, {
             headers: {
                 Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`
@@ -30,6 +33,9 @@ export const GithubProvider = ({ children }) => {
         // setUsers(data);
         // setLoading(false);
     }
+
+    // Função que configura o 'loading' como 'true', signifca que iremos realizar algum procedimento:
+    const setLoading = () => dispatch({ type: "SET_LOADING" });
 
     return (
         <GithubContext.Provider
